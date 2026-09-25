@@ -1,10 +1,17 @@
 @echo on
 setlocal enabledelayedexpansion
 
+if "%target_platform%"=="win-64" set "RUST_TARGET=x86_64-pc-windows-msvc"
+if "%target_platform%"=="win-arm64" set "RUST_TARGET=aarch64-pc-windows-msvc"
+if not defined RUST_TARGET (
+    echo unknown target_platform %target_platform%
+    exit /b 1
+)
+
 pushd "%SRC_DIR%"
 if exist "%SRC_DIR%\target\wheels\py_svg_hush*.whl" del /q "%SRC_DIR%\target\wheels\py_svg_hush*.whl"
 cargo-bundle-licenses --format yaml --output %SRC_DIR%\THIRDPARTY.yml
-maturin build -vv -j %CPU_COUNT% --release --strip --interpreter "%PYTHON%"
+maturin build -vv -j %CPU_COUNT% --release --strip --target %RUST_TARGET% --interpreter "%PYTHON%"
 popd
 
 set "wheel_count=0"
