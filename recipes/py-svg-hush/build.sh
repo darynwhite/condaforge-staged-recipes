@@ -56,6 +56,8 @@ fi
 
 cargo-bundle-licenses --format yaml --output "$SRC_DIR/THIRDPARTY.yml"
 
-maturin build -vv -j "${CPU_COUNT}" --release --strip --manylinux off --interpreter python "${_xtra_maturin_args[@]}"
+pushd "$SRC_DIR"
+maturin build -vv -j "${CPU_COUNT}" --release --strip --manylinux off --interpreter "${PYTHON}" "${_xtra_maturin_args[@]}"
+popd
 
 "${PYTHON}" -m pip install "$SRC_DIR"/target/wheels/py_svg_hush*.whl --no-deps -vv
