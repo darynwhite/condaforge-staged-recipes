@@ -1,8 +1,7 @@
 @echo on
 
-cargo-bundle-licenses --format yaml --output %SRC_DIR%\THIRDPARTY.yml
-
 pushd "%SRC_DIR%"
+cargo-bundle-licenses --format yaml --output %SRC_DIR%\THIRDPARTY.yml
 maturin build -vv -j %CPU_COUNT% --release --strip --manylinux off --interpreter "%PYTHON%"
 popd
 

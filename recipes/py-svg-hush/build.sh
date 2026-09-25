@@ -54,9 +54,8 @@ EOF
     sed -i.bak 's,aarch64,arm64,g' "$BUILD_PREFIX/venv/lib/platform-patch.py"
 fi
 
-cargo-bundle-licenses --format yaml --output "$SRC_DIR/THIRDPARTY.yml"
-
 pushd "$SRC_DIR"
+cargo-bundle-licenses --format yaml --output "$SRC_DIR/THIRDPARTY.yml"
 maturin build -vv -j "${CPU_COUNT}" --release --strip --manylinux off --interpreter "${PYTHON}" "${_xtra_maturin_args[@]}"
 popd
 
