@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 pushd "%SRC_DIR%"
 if exist "%SRC_DIR%\target\wheels\py_svg_hush*.whl" del /q "%SRC_DIR%\target\wheels\py_svg_hush*.whl"
 cargo-bundle-licenses --format yaml --output %SRC_DIR%\THIRDPARTY.yml
-maturin build -vv -j %CPU_COUNT% --release --strip --manylinux off --interpreter "%PYTHON%"
+maturin build -vv -j %CPU_COUNT% --release --strip --interpreter "%PYTHON%"
 popd
 
 set "wheel_count=0"
