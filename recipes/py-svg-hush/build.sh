@@ -19,7 +19,7 @@ declare -a _xtra_maturin_args
 mkdir -p "$SRC_DIR/.cargo"
 
 if [ "$target_platform" = "osx-64" ] ; then
-    cat <<EOF >> "$SRC_DIR/.cargo/config"
+    cat <<EOF >> "$SRC_DIR/.cargo/config.toml"
 [target.x86_64-apple-darwin]
 linker = "$CC"
 rustflags = [
@@ -31,7 +31,7 @@ EOF
 
     _xtra_maturin_args+=(--target=x86_64-apple-darwin)
 elif [ "$target_platform" = "osx-arm64" ] ; then
-    cat <<EOF >> "$SRC_DIR/.cargo/config"
+    cat <<EOF >> "$SRC_DIR/.cargo/config.toml"
 # Required for intermediate codegen stuff
 [target.x86_64-apple-darwin]
 linker = "$CC_FOR_BUILD"
