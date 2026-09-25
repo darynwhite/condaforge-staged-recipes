@@ -55,8 +55,16 @@ EOF
 fi
 
 pushd "$SRC_DIR"
+rm -f "$SRC_DIR"/target/wheels/py_svg_hush*.whl
 cargo-bundle-licenses --format yaml --output "$SRC_DIR/THIRDPARTY.yml"
 maturin build -vv -j "${CPU_COUNT}" --release --strip --manylinux off --interpreter "${PYTHON}" "${_xtra_maturin_args[@]}"
 popd
 
-"${PYTHON}" -m pip install "$SRC_DIR"/target/wheels/py_svg_hush*.whl --no-deps -vv
+mapfile -t wheels < <(find "$SRC_DIR/target/wheels" -maxdepth 1 -type f -name 'py_svg_hush*.whl' | sort)
+if [ "${#wheels[@]}" -ne 1 ]; then
+    printf 'Expected exactly one py_svg_hush wheel, found %s\n' "${#wheels[@]}"
+    printf '%s\n' "${wheels[@]}"
+    exit 1
+fi
+
+"${PYTHON}" -m pip install "${wheels[0]}" --no-deps -vv
